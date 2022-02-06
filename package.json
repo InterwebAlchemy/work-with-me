@@ -4,12 +4,16 @@
   "scripts": {
     "build:app": "next build",
     "build:types": "openapi-typescript https://$SUPABASE_PROJECT_ID.supabase.co/rest/v1/?apikey=$SUPABASE_API_KEY --output ./src/types/supabase.ts",
-    "dev": "next dev",
+    "dev": "npm run dev:next",
+    "dev:next": "next dev",
     "lint:app": "next lint",
     "prepare": "is-ci || prepare:local",
-    "prepare:local": "prepare:env",
     "prepare:env": "copyfiles ./.env.example ./.env.local",
-    "start": "next start"
+    "prepare:local": "prepare:env && prepare:supabase",
+    "prepare:supabase": "npm run supabase:init",
+    "start": "next start",
+    "supabase:init": "supabase init",
+    "test": "echo 'No tests configured...' && exit 0"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.1",
@@ -17,6 +21,7 @@
     "@emotion/styled": "^11.6.0",
     "@supabase/supabase-js": "^1.29.4",
     "@supabase/ui": "^0.36.3",
+    "cross-fetch": "^3.1.5",
     "framer-motion": "^5.6.0",
     "humps": "^2.0.1",
     "next": "12.0.10",

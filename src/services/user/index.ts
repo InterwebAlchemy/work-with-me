@@ -1,24 +1,69 @@
 import type { PostgrestSingleResponse, PostgrestResponse } from '@supabase/supabase-js'
+import fetch from 'cross-fetch'
 
 import { supabase } from '../../adapters/supabase'
 import type { definitions } from '../../types/supabase'
 import type { FullUserProfile } from '../../types/user'
 
+export interface UpdateAvatarRequest {
+  userId: definitions['profiles']['id']
+  avatarUrl: definitions['profiles']['avatar_url']
+}
+
+export const updateUserAvatar = async ({
+  userId,
+  avatarUrl,
+}: UpdateAvatarRequest): Promise<void> => {
+  if (typeof avatarUrl !== 'undefined') {
+    return fetch(new URL(avatarUrl).toString())
+      .then((response) => response.blob())
+      .then((blob) => {
+        supabase.storage
+          .from('avatars')
+          .update(`/${userId}/avatar.png`, blob)
+          .then((data) => {
+            console.log(data)
+          })
+          .catch((e) => {
+            if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+              console.error(e)
+            }
+          })
+      })
+      .catch((e) => {
+        if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+          console.error(e)
+        }
+      })
+  }
+}
+
 export const logOut = async () => {
   const { error } = await supabase.auth.signOut()
 
-  if (error) {
+  if (error && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
     console.error('Error logging out:', error.message)
   }
 }
 
 export const logIn = async () => {
-  const { error } = await supabase.auth.signIn(
+  const { error, user } = await supabase.auth.signIn(
     { provider: 'github' },
     { redirectTo: `${process.env.NEXT_PUBLIC_APPLICATION_URL}/profile` }
   )
 
-  if (error) {
+  if (user !== null) {
+    const userId = user.id
+    const avatarUrl = user.identities?.[0].identity_data.avatar_url
+
+    updateUserAvatar({ userId, avatarUrl }).catch((e) => {
+      if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+        console.error(e)
+      }
+    })
+  }
+
+  if (error && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
     console.error('Error logging in:', error.message)
   }
 }

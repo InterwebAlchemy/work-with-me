@@ -120,12 +120,18 @@ export const UserProfileProvider = ({
           } else {
             if (data !== null) {
               setUsername(data.username ?? '')
-              setAvatarUrl(data.avatar_url)
               setWebsite(data.website)
               setCommunicationStyle(data.communication_style)
               setEnneagramTypeId(data.enneagram_type_id)
               setPersonalityTypeId(data.personality_type_id)
               setPersonalityColorId(data.personality_color_id)
+
+              setAvatarUrl(
+                new URL(
+                  `/${user.id}/avatar.png`,
+                  process.env.NEXT_PUBLIC_APPLICATION_URL
+                ).toString()
+              )
             }
           }
         }

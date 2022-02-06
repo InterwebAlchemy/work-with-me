@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react'
-import { GoPencil, GoPerson, GoOctoface } from 'react-icons/go'
+import { Menu, MenuButton, MenuList, MenuItem, Button, Link } from '@chakra-ui/react'
+import { GoPencil, GoPerson, GoOctoface, GoBeaker } from 'react-icons/go'
 
 import UserAvatar from '../UserAvatar'
 import useProfile from '../../hooks/useProfile'
@@ -31,6 +31,11 @@ const UserMenu = (): React.ReactElement => {
           <MenuItem icon={<GoPerson />} onClick={viewProfile}>
             View Profile
           </MenuItem>
+          <MenuItem icon={<GoBeaker />}>
+            <Link href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL} isExternal>
+              Request New Psychometric
+            </Link>
+          </MenuItem>
           <MenuItem icon={<GoOctoface />} onClick={logOut}>
             Sign Out
           </MenuItem>
@@ -40,7 +45,7 @@ const UserMenu = (): React.ReactElement => {
   }
 
   return (
-    <Button leftIcon={<GoOctoface />} onClick={logIn} variant="ghost">
+    <Button leftIcon={<GoOctoface />} onClick={logIn} variant="link">
       Sign In w/ GitHub
     </Button>
   )
