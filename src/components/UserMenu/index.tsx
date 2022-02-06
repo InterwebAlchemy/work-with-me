@@ -40,7 +40,7 @@ const UserMenu = (): React.ReactElement => {
   }
 
   return (
-    <Button icon={GoOctoface} onClick={logIn} variant="link">
+    <Button leftIcon={<GoOctoface />} onClick={logIn} variant="ghost">
       Sign In w/ GitHub
     </Button>
   )

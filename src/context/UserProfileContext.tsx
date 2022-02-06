@@ -81,12 +81,15 @@ export const UserProfileProvider = ({
       personality_color_id: personalityColorId,
       personality_type_id: personalityTypeId,
     }).catch((e) => {
-      console.error(e)
+      if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+        console.error(e)
+      }
     })
   }
 
-  // get psychometric options on mount
+  // get user profile for editing when user authenticates
   useEffect(() => {
+    // get psychometric options on mount
     Promise.all([getPersonalityTypes(), getPersonalityColors(), getEnneagramTypes()])
       .then(([personalityTypes, personalityColors, enneagramTypes]) => {
         if (personalityTypes?.data !== null) {
@@ -102,12 +105,11 @@ export const UserProfileProvider = ({
         }
       })
       .catch((e) => {
-        console.error(e)
+        if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+          console.error(e)
+        }
       })
-  }, [])
 
-  // get user profile for editing when user authenticates
-  useEffect(() => {
     const getProfile = async () => {
       try {
         if (user !== null && typeof user?.identities !== 'undefined') {
@@ -128,7 +130,9 @@ export const UserProfileProvider = ({
           }
         }
       } catch (e) {
-        console.error(e)
+        if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+          console.error(e)
+        }
       }
     }
 

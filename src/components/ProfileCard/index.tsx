@@ -86,7 +86,7 @@ const ProfileCard = ({
               <Text>
                 <CardHeader />
               </Text>
-              <Stack direction="row">
+              <Stack direction="row" flexWrap="wrap">
                 {profile?.personality?.type && (
                   <Link href={profile.personality.url} isExternal>
                     <PsychometricTag>
@@ -111,7 +111,7 @@ const ProfileCard = ({
           )}
         </Stack>
         {layout === 'full' && (
-          <Stack direction="row" marginTop="20px !important" justifyContent="end">
+          <Stack direction="row" marginTop="20px !important" justifyContent="end" flexWrap="wrap">
             {profile?.personality?.type && (
               <Link href="#personality-type">
                 <PsychometricTag>

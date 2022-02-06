@@ -1,0 +1,26 @@
+name: Psychometric Request
+description: Request a new psychometric or an update to an existing one
+title: '[Request]: '
+labels: ['enhancement', 'question']
+assignees:
+  - ericrallen
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for providing us with some input on a potentially useful psychometric to include.
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: Where can users find their results for this psychometric?
+      placeholder: https://example.com/
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Psychometric
+      description: Please describe the psychometric you're requesting.
+    validations:
+      required: true
