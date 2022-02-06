@@ -1,5 +1,6 @@
-import type { PostgrestSingleResponse, PostgrestResponse } from '@supabase/supabase-js'
 import fetch from 'cross-fetch'
+
+import type { PostgrestSingleResponse, PostgrestResponse } from '@supabase/supabase-js'
 
 import { supabase } from '../../adapters/supabase'
 import type { definitions } from '../../types/supabase'
@@ -15,12 +16,12 @@ export const updateUserAvatar = async ({
   avatarUrl,
 }: UpdateAvatarRequest): Promise<void> => {
   if (typeof avatarUrl !== 'undefined') {
-    return fetch(new URL(avatarUrl).toString())
-      .then((response) => response.blob())
+    fetch(new URL(avatarUrl).toString())
+      .then(async (response) => await response.blob())
       .then((blob) => {
         supabase.storage
           .from('avatars')
-          .update(`/${userId}/avatar.png`, blob)
+          .update(`${userId}.png`, blob)
           .then((data) => {
             console.log(data)
           })
@@ -38,15 +39,17 @@ export const updateUserAvatar = async ({
   }
 }
 
-export const logOut = async () => {
+export const logOut = async (): Promise<void> => {
   const { error } = await supabase.auth.signOut()
 
-  if (error && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+  if (error != null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
     console.error('Error logging out:', error.message)
+  } else {
+    history.pushState({}, '', '/')
   }
 }
 
-export const logIn = async () => {
+export const logIn = async (): Promise<void> => {
   const { error, user } = await supabase.auth.signIn(
     { provider: 'github' },
     { redirectTo: `${process.env.NEXT_PUBLIC_APPLICATION_URL}/profile` }
@@ -63,7 +66,7 @@ export const logIn = async () => {
     })
   }
 
-  if (error && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+  if (error != null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
     console.error('Error logging in:', error.message)
   }
 }
@@ -71,7 +74,7 @@ export const logIn = async () => {
 export const getUserProfile = async (): Promise<
   PostgrestSingleResponse<definitions['profiles']>
 > => {
-  return supabase
+  return await supabase
     .from<definitions['profiles']>('profiles')
     .select(
       `username, avatar_url, website, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
@@ -82,8 +85,8 @@ export const getUserProfile = async (): Promise<
 export const getFullUserProfile = async (
   username?: string
 ): Promise<PostgrestSingleResponse<FullUserProfile> | null> => {
-  if (username) {
-    return supabase
+  if (typeof username !== 'undefined') {
+    return await supabase
       .from<FullUserProfile>('profiles')
       .select(
         `username, avatar_url, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
@@ -103,15 +106,18 @@ export const updateUserProfile = async (
     throw new Error('Must provide a valid userId String.')
   }
 
-  return supabase.from<definitions['profiles']>('profiles').update(profile).match({ id: userId })
+  return await supabase
+    .from<definitions['profiles']>('profiles')
+    .update(profile)
+    .match({ id: userId })
 }
 
 export const deleteUserProfile = async (): Promise<unknown> => {
-  return supabase.from<definitions['profiles']>('profiles').delete()
+  return await supabase.from<definitions['profiles']>('profiles').delete()
 }
 
 export const getFeaturedProfiles = async (): Promise<
   PostgrestResponse<Pick<definitions['profiles'], 'username'>>
 > => {
-  return supabase.rpc('featured_users', { user_count: 5 })
+  return await supabase.rpc('featured_users', { user_count: 5 })
 }

@@ -19,7 +19,7 @@ const CommunicationStyle = (): React.ReactElement => {
       <FormLabel>Communication Style</FormLabel>
       <Textarea onChange={onCommunicationStyleChange} value={communicationStyle} size="sm" />
       <FormHelperText>
-        Describe your communication style in a tweet's length.
+        Describe your communication style with a Tweet of characters.
         <br />
         {COMMUNICATION_STYLE_LIMIT - (communicationStyle?.length ?? 0)} characters remaining
       </FormHelperText>

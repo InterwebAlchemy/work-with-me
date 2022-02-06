@@ -18,7 +18,7 @@ const UserMenu = (): React.ReactElement => {
     await router.push(`/${username}`)
   }
 
-  if (username) {
+  if (username !== '') {
     return (
       <Menu>
         <MenuButton aria-label="Menu" variant="">

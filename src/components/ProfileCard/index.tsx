@@ -53,7 +53,8 @@ const ProfileCard = ({
           {linkToProfile ? (
             <InternalLink
               href={profileUrl.toString()}
-              aria-label={`View ${profile?.username} on Work with Me`}
+              aria-label={`View ${profile?.username ?? 'Profile'} on Work with Me`}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-expect-error
               chakraLinkProps={{ marginRight: '10px' }}
               title={'Work w/ Me Profile'}
@@ -64,7 +65,7 @@ const ProfileCard = ({
             <Link
               href={linkToProfile ? profileUrl.toString() : githubProfileUrl.toString()}
               isExternal
-              aria-label={`View ${profile?.username} on GitHub`}
+              aria-label={`View ${profile?.username ?? 'Profile'} on GitHub`}
               marginRight="10px"
               title="GitHub Profile"
             >
@@ -87,21 +88,21 @@ const ProfileCard = ({
                 <CardHeader />
               </Text>
               <Stack direction="row" flexWrap="wrap">
-                {profile?.personality?.type && (
+                {typeof profile?.personality?.type !== 'undefined' && (
                   <Link href={profile.personality.url} isExternal>
                     <PsychometricTag>
                       {profile?.personality.type} | {profile?.personality.name}
                     </PsychometricTag>
                   </Link>
                 )}
-                {profile?.enneagram?.number && (
+                {typeof profile?.enneagram?.number !== 'undefined' && (
                   <Link href={profile.enneagram.url} isExternal>
                     <PsychometricTag>
                       {profile?.enneagram.number} | {profile?.enneagram.name}
                     </PsychometricTag>
                   </Link>
                 )}
-                {profile?.color?.name && (
+                {typeof profile?.color?.name !== 'undefined' && (
                   <Link href={profile.color.url} isExternal>
                     <PsychometricTag>{profile?.color.name}</PsychometricTag>
                   </Link>
@@ -112,21 +113,21 @@ const ProfileCard = ({
         </Stack>
         {layout === 'full' && (
           <Stack direction="row" marginTop="20px !important" justifyContent="end" flexWrap="wrap">
-            {profile?.personality?.type && (
+            {typeof profile?.personality?.type !== 'undefined' && (
               <Link href="#personality-type">
                 <PsychometricTag>
                   {profile?.personality.type} | {profile?.personality.name}
                 </PsychometricTag>
               </Link>
             )}
-            {profile?.enneagram?.number && (
+            {typeof profile?.enneagram?.number !== 'undefined' && (
               <Link href="#enneagram-type">
                 <PsychometricTag>
                   {profile?.enneagram.number} | {profile?.enneagram.name}
                 </PsychometricTag>
               </Link>
             )}
-            {profile?.color?.name && (
+            {typeof profile?.color?.name !== 'undefined' && (
               <Link href="#personality-color">
                 <PsychometricTag>{profile?.color.name}</PsychometricTag>
               </Link>
