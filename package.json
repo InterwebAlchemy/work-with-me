@@ -12,7 +12,8 @@
     "prepare:local": "prepare:env && prepare:supabase",
     "prepare:supabase": "npm run supabase:init",
     "start": "next start",
-    "supabase:init": "supabase init"
+    "supabase:init": "supabase init",
+    "test": "echo 'No tests configured...' && exit 0"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.1",
