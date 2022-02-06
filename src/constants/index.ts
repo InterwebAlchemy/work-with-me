@@ -1,0 +1,9 @@
+export const COMMUNICATION_STYLE_LIMIT = 140
+
+export const GITHUB_PROFILE_BASE_URL = 'https://github.com'
+
+export const PSYCHOMETRIC_URLS = {
+  TYPE: 'https://16personalities.com',
+  COLOR: 'https://www.colorcode.com/',
+  ENNEAGRAM: 'https://enneagraminstitute.com',
+}
