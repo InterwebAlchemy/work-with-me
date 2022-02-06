@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Menu, MenuButton, MenuList, MenuItem, Avatar } from '@chakra-ui/react'
+import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react'
 import { GoPencil, GoPerson, GoOctoface } from 'react-icons/go'
 
 import UserAvatar from '../UserAvatar'
@@ -8,7 +8,7 @@ import useProfile from '../../hooks/useProfile'
 const UserMenu = (): React.ReactElement => {
   const router = useRouter()
 
-  const { username, logOut } = useProfile()
+  const { username, logIn, logOut } = useProfile()
 
   const editProfile = async (): Promise<void> => {
     await router.push('/profile')
@@ -39,7 +39,11 @@ const UserMenu = (): React.ReactElement => {
     )
   }
 
-  return <></>
+  return (
+    <Button icon={GoOctoface} onClick={logIn} variant="link">
+      Sign In w/ GitHub
+    </Button>
+  )
 }
 
 export default UserMenu
