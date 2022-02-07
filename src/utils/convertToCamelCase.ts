@@ -1,5 +1,7 @@
 import { camelize } from 'humps'
 
-export default (str = '') => {
+const convertToCamelCase = (str = ''): string => {
   return camelize(str)
 }
+
+export default convertToCamelCase
