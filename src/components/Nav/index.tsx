@@ -2,13 +2,20 @@ import { Box, Stack } from '@chakra-ui/react'
 
 import UserMenu from '../UserMenu'
 import InternalLink from '../InternalLink'
+import ThemeToggle from '../ThemeToggle'
 
 const Nav = (): React.ReactElement => {
   return (
     <Box w="100%" padding="10px" position="fixed">
-      <Stack as="nav" direction="row" justifyContent="space-between">
-        <InternalLink href="/">Work w/ Me</InternalLink>
-        <UserMenu />
+      <Stack as="nav" direction="row" alignItems="center" justifyContent="space-between">
+        {/* @ts-expect-error CSS Props not correctly inherited by chakraLinkProps Object */}
+        <InternalLink href="/" chakraLinkProps={{ fontWeight: 'bold' }}>
+          Work w/ Me
+        </InternalLink>
+        <Stack direction="row" alignItems="center" spacing={5}>
+          <ThemeToggle />
+          <UserMenu />
+        </Stack>
       </Stack>
     </Box>
   )
