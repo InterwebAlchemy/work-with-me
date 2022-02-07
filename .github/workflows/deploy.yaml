@@ -19,6 +19,11 @@ jobs:
         with:
           token: ${{ secrets.GH_AUTH_TOKEN }}
 
+      - name: Configure git
+        run: |
+          git config --global user.email "bot@workwithme.app"
+          git config --global user.name "Work w/ Me Release Bot"
+
       - uses: actions/setup-node@v2
         with:
           node-version: 14
@@ -37,6 +42,32 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Encode Supabase API Key
+        id: credentials
+        run: |
+          api_key="${{ secrets.SUPABASE_ANON_KEY }}"
+          url_encoded_key=$(node -p "encodeURIComponent('$api_key')")
+          echo "::set-output name=ENCODED_SUPABASE_ANON_KEY::${url_encoded_key}";
+
+      - name: Generate Types
+        run: npm run build:types
+        env:
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+          SUPABASE_ANON_KEY: ${{ steps.credentials.outputs.ENCODED_SUPABASE_ANON_KEY }}
+
+      - name: Check for modified files
+        id: git-check
+        run:
+          echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo
+          "true"; else echo "false"; fi)
+
+      - name: Push Changes to Type Definitions
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git add .
+          git commit -m 'chore(types): update supabase type definitions'
+          git push
 
       - name: Run Tests
         run: npm test

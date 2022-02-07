@@ -97,7 +97,7 @@
   },
   "scripts": {
     "build:app": "next build",
-    "build:types": "openapi-typescript https://$SUPABASE_PROJECT_ID.supabase.co/rest/v1/?apikey=$SUPABASE_API_KEY --output ./src/types/supabase.ts",
+    "build:types": "openapi-typescript https://$SUPABASE_PROJECT_ID.supabase.co/rest/v1/?apikey=$SUPABASE_ANON_KEY --output ./src/types/supabase.ts",
     "commit": "cz",
     "commit:retry": "npm run commit -- --retry",
     "dev": "npm run dev:next",
