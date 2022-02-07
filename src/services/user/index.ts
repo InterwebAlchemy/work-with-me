@@ -37,6 +37,7 @@ export const updateUserAvatar = async ({
     fetch(new URL(avatarUrl).toString())
       .then(async (response) => await response.blob())
       .then((blob) => {
+        console.log(blob)
         supabase.storage
           .from('avatars')
           .upload(`public/${userId}/avatar.png`, blob, {
@@ -80,8 +81,12 @@ export const logIn = async (): Promise<void> => {
   )
 
   if (user !== null) {
+    console.log(user)
+
     const userId = user.id
     const avatarUrl = user.identities?.[0].identity_data.avatar_url
+
+    console.log(avatarUrl)
 
     updateUserAvatar({ userId, avatarUrl }).catch((e) => {
       if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
