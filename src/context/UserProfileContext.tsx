@@ -1,7 +1,14 @@
 import { useState, useEffect, createContext } from 'react'
 import { Auth } from '@supabase/ui'
 
-import { getUserProfile, updateUserProfile, getUserAvatar, logIn, logOut } from '../services/user'
+import {
+  getUserProfile,
+  updateUserProfile,
+  deleteUserProfile,
+  getUserAvatar,
+  logIn,
+  logOut,
+} from '../services/user'
 import {
   getPersonalityTypes,
   getPersonalityColors,
@@ -21,6 +28,7 @@ export interface UserProfileContextProvider extends KeysToCamelCase<definitions[
   setPersonalityTypeId: React.Dispatch<React.SetStateAction<number | undefined>>
   setPersonalityColorId: React.Dispatch<React.SetStateAction<number | undefined>>
   updateProfile: () => Promise<void>
+  deleteProfile: () => Promise<void>
   logIn: () => Promise<void>
   logOut: () => Promise<void>
 }
@@ -44,6 +52,7 @@ export const UserProfileContext = createContext<UserProfileContextProvider>({
   setPersonalityTypeId: () => {},
   setPersonalityColorId: () => {},
   updateProfile: async () => {},
+  deleteProfile: async () => {},
   logIn: async () => {},
   logOut: async () => {},
   /* eslint-enable @typescript-eslint/no-empty-function */
@@ -87,6 +96,16 @@ export const UserProfileProvider = ({
         console.error(e)
       }
     })
+  }
+
+  const deleteProfile = async (): Promise<void> => {
+    await deleteUserProfile(id).catch((e) => {
+      if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+        console.error(e)
+      }
+    })
+
+    await logOut()
   }
 
   // get user profile for editing when user authenticates
@@ -168,6 +187,7 @@ export const UserProfileProvider = ({
         personalityColorId,
         personalityTypeId,
         updateProfile,
+        deleteProfile,
         personalityTypes,
         personalityColors,
         enneagramTypes,
