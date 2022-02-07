@@ -3,7 +3,7 @@ import { Box, Stack, Link, Text, Heading } from '@chakra-ui/react'
 import UserAvatar from '../UserAvatar'
 import PsychometricTag from '../PsychometricTag'
 import InternalLink from '../InternalLink'
-import { GITHUB_PROFILE_BASE_URL } from '../../constants'
+import { GITHUB_PROFILE_BASE_URL, APPLICATION_URL } from '../../constants'
 
 import type { UserProfileProps } from '../../pages/[...username]'
 
@@ -17,7 +17,7 @@ const ProfileCard = ({
   layout = 'full',
   linkToProfile = false,
 }: ProfileCardProps): React.ReactElement => {
-  const profileUrl = new URL(profile?.username ?? '', process.env.NEXT_PUBLIC_APPLICATION_URL)
+  const profileUrl = new URL(profile?.username ?? '', APPLICATION_URL)
   const githubProfileUrl = new URL(profile?.username ?? '', GITHUB_PROFILE_BASE_URL)
 
   const CardHeader = (): React.ReactElement => {

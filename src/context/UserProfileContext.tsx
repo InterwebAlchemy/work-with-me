@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext } from 'react'
 import { Auth } from '@supabase/ui'
 
-import { getUserProfile, updateUserProfile, logIn, logOut } from '../services/user'
+import { getUserProfile, updateUserProfile, getUserAvatar, logIn, logOut } from '../services/user'
 import {
   getPersonalityTypes,
   getPersonalityColors,
@@ -128,12 +128,11 @@ export const UserProfileProvider = ({
               setPersonalityTypeId(data.personality_type_id)
               setPersonalityColorId(data.personality_color_id)
 
-              setAvatarUrl(
-                new URL(
-                  `/storage/v1/object/public/${user.id}.png`,
-                  process.env.NEXT_PUBLIC_SUPABASE_URL
-                ).toString()
-              )
+              const avatarUrl = await getUserAvatar(user.id)
+
+              if (avatarUrl !== null) {
+                setAvatarUrl(avatarUrl)
+              }
             }
           }
         }

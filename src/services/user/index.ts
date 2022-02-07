@@ -6,6 +6,22 @@ import { supabase } from '../../adapters/supabase'
 import type { definitions } from '../../types/supabase'
 import type { FullUserProfile } from '../../types/user'
 
+export const getUserAvatar = async (
+  userId: definitions['profiles']['id']
+): Promise<string | null> => {
+  const { publicURL, error } = await supabase.storage.from('avatars').getPublicUrl(`${userId}.png`)
+
+  if (error !== null) {
+    if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+      console.error(error)
+    }
+
+    return null
+  }
+
+  return publicURL
+}
+
 export interface UpdateAvatarRequest {
   userId: definitions['profiles']['id']
   avatarUrl: definitions['profiles']['avatar_url']
