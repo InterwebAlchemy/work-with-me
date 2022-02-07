@@ -26,11 +26,15 @@ You'll need a few things installed locally before you can start working with thi
    **Note**: This will initialize [`husky`](https://typicode.github.io/husky/#/), your `.env.local`,
    and the `supabase` CLI.
 
-4. Run the development server:
+4. Start the Supabase Local Container:
+   ```sh
+   supabase start
+   ```
+5. Run the development server:
    ```sh
    npm run dev
    ```
-5. Make changes and commit them
+6. Make changes and commit them
 
    **Note**: This project leverages [Commitizen](https://github.com/commitizen/cz-cli) to assist
    with following our [`commitlint`](https://github.com/conventional-changelog/commitlint) rules and
@@ -47,8 +51,8 @@ You'll need a few things installed locally before you can start working with thi
    npm run commit:retry
    ```
 
-6. Push your changes to your fork
-7. Create a Pull Request against `main`
+7. Push your changes to your fork
+8. Create a Pull Request against `main`
 
 ## Working Locally
 
