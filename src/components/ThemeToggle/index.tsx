@@ -14,7 +14,7 @@ const ThemeToggle = (): React.ReactElement => {
         alignItems="center"
         margin="0"
       >
-        <GoLightBulb size={12} />
+        <GoLightBulb size={12} style={{ marginTop: '2px' }} />
         <Switch
           id="darkMode"
           onChange={toggleColorMode}
