@@ -37,7 +37,10 @@ export const updateUserAvatar = async ({
       .then((blob) => {
         supabase.storage
           .from('avatars')
-          .upload(`${userId}.png`, blob)
+          .upload(`${userId}.png`, blob, {
+            cacheControl: '3600',
+            upsert: true,
+          })
           .then(({ error, data }) => {
             // if (error !== null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
             console.log(data)
