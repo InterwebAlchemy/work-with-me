@@ -93,14 +93,15 @@ export const logIn = async (): Promise<void> => {
   }
 }
 
-export const getUserProfile = async (): Promise<
-  PostgrestSingleResponse<definitions['profiles']>
-> => {
+export const getUserProfile = async (
+  userId: definitions['profiles']['id']
+): Promise<PostgrestSingleResponse<definitions['profiles']>> => {
   return await supabase
     .from<definitions['profiles']>('profiles')
     .select(
       `username, website, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
     )
+    .match({ id: userId })
     .single()
 }
 

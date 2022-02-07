@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuList, MenuItem, Button, Link } from '@chakra-ui/react'
 import { GoPencil, GoPerson, GoOctoface, GoBeaker } from 'react-icons/go'
 
@@ -7,6 +8,8 @@ import useProfile from '../../hooks/useProfile'
 
 const UserMenu = (): React.ReactElement => {
   const router = useRouter()
+
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const { username, logIn, logOut } = useProfile()
 
@@ -18,7 +21,13 @@ const UserMenu = (): React.ReactElement => {
     await router.push(`/${username}`)
   }
 
-  if (username !== '') {
+  useEffect(() => {
+    if (typeof username !== 'undefined' && username !== null && username !== '') {
+      setLoggedIn(true)
+    }
+  }, [username])
+
+  if (loggedIn) {
     return (
       <Menu>
         <MenuButton aria-label="Menu" variant="">
