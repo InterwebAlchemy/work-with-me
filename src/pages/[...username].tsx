@@ -23,9 +23,9 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
   return (
     <Page>
       <ProfileCard profile={profile} />
-      {(typeof profile?.personality.type !== 'undefined' ||
-        typeof profile?.enneagram.number !== 'undefined' ||
-        typeof profile?.color.name !== 'undefined') && (
+      {(typeof profile?.personality?.type !== 'undefined' ||
+        typeof profile?.enneagram?.number !== 'undefined' ||
+        typeof profile?.color?.name !== 'undefined') && (
         <Box marginBottom="20px">
           <Heading as="h2" size="md" marginBottom="5px">
             Psychometric Descriptions
@@ -36,28 +36,28 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
       {typeof profile?.personality?.type !== 'undefined' && (
         <Box id="personality-type" marginBottom="40px">
           <Heading as="h3" size="sm" marginBottom="5px">
-            Type: {profile?.personality.name} ({profile?.personality.type})
+            Type: {profile.personality.name} ({profile.personality.type})
           </Heading>
           <Text marginBottom="10px">{profile?.personality.description}</Text>
           <Link href={profile?.personality.url} isExternal>
-            Learn more about the {profile?.personality.type} personality type and the{' '}
+            Learn more about the {profile.personality.type} personality type and the{' '}
             {profile?.personality.name} archetype
           </Link>
         </Box>
       )}
-      {typeof profile?.enneagram.number !== 'undefined' && (
+      {typeof profile?.enneagram?.number !== 'undefined' && (
         <Box id="enneagram-type" marginBottom="40px">
           <Heading as="h3" size="sm" marginBottom="5px">
             Enneagram: {profile?.enneagram.name} ({profile?.enneagram.number})
           </Heading>
           <Text marginBottom="10px">{profile?.enneagram.description}</Text>
-          <Link href={profile?.enneagram.url} isExternal>
+          <Link href={profile?.enneagram?.url} isExternal>
             Learn more about the {profile?.enneagram.number} enneagram number and the{' '}
             {profile?.enneagram.name} archetype
           </Link>
         </Box>
       )}
-      {typeof profile?.color.name !== 'undefined' && (
+      {typeof profile?.color?.name !== 'undefined' && (
         <Box id="personality-color" marginBottom="40px">
           <Heading as="h3" size="sm" marginBottom="5px">
             Color: {profile?.color.name}
