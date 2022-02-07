@@ -5,18 +5,18 @@
   "private": true,
   "author": {
     "name": "Eric Allen",
-    "url": "https://github.com/ericrallen/"
+    "url": "https://github.com/ericrallen"
   },
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/InterwebAlchemy/work-with-me/"
+    "url": "https://github.com/InterwebAlchemy/work-with-me"
   },
   "engines": {
     "node": "14",
     "npm": "6"
   },
   "bugs": {
-    "url": "https://github.com/InterwebAlchemy/work-with-me/issues/"
+    "url": "https://github.com/InterwebAlchemy/work-with-me/issues"
   },
   "lint-staged": {
     "*.(md)": [
