@@ -114,7 +114,7 @@ export const getFullUserProfile = async (
     return supabase
       .from<FullUserProfile>('profiles')
       .select(
-        `username, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
+        `id, username, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
       )
       .match({ username })
       .single()
