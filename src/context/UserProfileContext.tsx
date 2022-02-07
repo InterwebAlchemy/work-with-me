@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext } from 'react'
 import { Auth } from '@supabase/ui'
 
-import { getUserProfile, updateUserProfile, logIn, logOut } from '../services/user'
+import { getUserProfile, updateUserProfile, getUserAvatar, logIn, logOut } from '../services/user'
 import {
   getPersonalityTypes,
   getPersonalityColors,
@@ -37,6 +37,7 @@ export const UserProfileContext = createContext<UserProfileContextProvider>({
   personalityTypes: [],
   personalityColors: [],
   enneagramTypes: [],
+  /* eslint-disable @typescript-eslint/no-empty-function */
   setWebsite: () => {},
   setCommunicationStyle: () => {},
   setEnneagramTypeId: () => {},
@@ -45,6 +46,7 @@ export const UserProfileContext = createContext<UserProfileContextProvider>({
   updateProfile: async () => {},
   logIn: async () => {},
   logOut: async () => {},
+  /* eslint-enable @typescript-eslint/no-empty-function */
 })
 
 export const UserProfileProvider = ({
@@ -110,7 +112,7 @@ export const UserProfileProvider = ({
         }
       })
 
-    const getProfile = async () => {
+    const getProfile = async (): Promise<void> => {
       try {
         if (user !== null && typeof user?.identities !== 'undefined') {
           const { error, data } = await getUserProfile()
@@ -126,12 +128,11 @@ export const UserProfileProvider = ({
               setPersonalityTypeId(data.personality_type_id)
               setPersonalityColorId(data.personality_color_id)
 
-              setAvatarUrl(
-                new URL(
-                  `/${user.id}/avatar.png`,
-                  process.env.NEXT_PUBLIC_APPLICATION_URL
-                ).toString()
-              )
+              const avatarUrl = await getUserAvatar(user.id)
+
+              if (avatarUrl !== null) {
+                setAvatarUrl(avatarUrl)
+              }
             }
           }
         }
@@ -143,10 +144,14 @@ export const UserProfileProvider = ({
     }
 
     if (user !== null && typeof user?.identities !== 'undefined') {
-      getProfile()
+      getProfile().catch((e) => {
+        if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+          console.error(e)
+        }
+      })
     }
 
-    if (user?.id) {
+    if (typeof user?.id !== 'undefined') {
       setId(user.id)
     }
   }, [user])

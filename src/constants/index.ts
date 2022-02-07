@@ -1,7 +1,7 @@
 export const COMMUNICATION_STYLE_LIMIT = 140
 
 export const APPLICATION_URL =
-  process.env.NEXT_PUBLIC_VERCEL_URL ?? process.env.NEXT_PUBLIC_APPLICATION_URL
+  `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` ?? process.env.NEXT_PUBLIC_APPLICATION_URL
 
 export const GITHUB_PROFILE_BASE_URL = 'https://github.com'
 

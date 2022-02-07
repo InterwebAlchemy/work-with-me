@@ -1,4 +1,4 @@
-import { Heading, Text, Link, Box, Stack, Divider } from '@chakra-ui/react'
+import { Heading, Text, Link, Box } from '@chakra-ui/react'
 
 import type { GetServerSidePropsResult, GetServerSidePropsContext } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -23,15 +23,17 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
   return (
     <Page>
       <ProfileCard profile={profile} />
-      {(profile?.personality.type || profile?.enneagram.number || profile?.color.name) && (
+      {(typeof profile?.personality.type !== 'undefined' ||
+        typeof profile?.enneagram.number !== 'undefined' ||
+        typeof profile?.color.name !== 'undefined') && (
         <Box marginBottom="20px">
           <Heading as="h2" size="md" marginBottom="5px">
             Psychometric Descriptions
           </Heading>
-          <Text>Here's a little more about {profile?.username}.</Text>
+          <Text>Here is a little more about {profile?.username}.</Text>
         </Box>
       )}
-      {profile?.personality?.type && (
+      {typeof profile?.personality?.type !== 'undefined' && (
         <Box id="personality-type" marginBottom="40px">
           <Heading as="h3" size="sm" marginBottom="5px">
             Type: {profile?.personality.name} ({profile?.personality.type})
@@ -43,7 +45,7 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
           </Link>
         </Box>
       )}
-      {profile?.enneagram.number && (
+      {typeof profile?.enneagram.number !== 'undefined' && (
         <Box id="enneagram-type" marginBottom="40px">
           <Heading as="h3" size="sm" marginBottom="5px">
             Enneagram: {profile?.enneagram.name} ({profile?.enneagram.number})
@@ -55,7 +57,7 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
           </Link>
         </Box>
       )}
-      {profile?.color.name && (
+      {typeof profile?.color.name !== 'undefined' && (
         <Box id="personality-color" marginBottom="40px">
           <Heading as="h3" size="sm" marginBottom="5px">
             Color: {profile?.color.name}

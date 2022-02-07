@@ -5,5 +5,6 @@ export type CamelCase<S extends string> = S extends `${infer P1}_${infer P2}${in
   : Lowercase<S>
 
 export type KeysToCamelCase<T> = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   [K in keyof T as CamelCase<string & K>]: T[K] extends {} ? KeysToCamelCase<T[K]> : T[K]
 }

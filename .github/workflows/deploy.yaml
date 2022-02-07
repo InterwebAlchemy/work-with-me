@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_AUTH_TOKEN }}
 
       - uses: actions/setup-node@v2
         with:
@@ -42,7 +44,7 @@ jobs:
       - name: PR Preview Deployment
         uses: amondnet/vercel-action@v20
         id: vercel-action-pr
-        if: startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop'
+        if: startsWith(github.head_ref, 'feature/') && github.base_ref == 'main'
         with:
           vercel-project-name: work-with-me
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -67,3 +69,13 @@ jobs:
           scope: interweb-alchemy
           alias-domains: |
             work-with-me.vercel.app
+
+      - name: Semantic Release
+        if: github.ref == 'refs/heads/main'
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          semantic_version: 18
+          extra_plugins: |
+            @semantic-release/git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}

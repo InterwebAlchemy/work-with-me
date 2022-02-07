@@ -36,15 +36,15 @@ const PsychometricDropdown = ({
     options.find(({ id }) => id === Number(value)) ?? null
   )
 
-  const renderPsychometricOptions = (): Array<React.ReactElement> => {
+  const renderPsychometricOptions = (): React.ReactElement[] => {
     return options.map(({ id, name, type, number }) => {
-      let optionLabel = `${name}`
+      let optionLabel = `${name ?? ''}`
 
-      if (type) {
+      if (typeof type !== 'undefined') {
         optionLabel = `${optionLabel} (${type})`
       }
 
-      if (number) {
+      if (typeof number !== 'undefined') {
         optionLabel = `${number} (${optionLabel})`
       }
 
@@ -70,11 +70,13 @@ const PsychometricDropdown = ({
 
   useEffect(() => {
     onChange?.(psychometric?.id ?? 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [psychometric?.id])
 
   useEffect(() => {
     setPsychometric(options.find(({ id }) => id === Number(value)) ?? null)
-  }, [value])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, options.length])
 
   const renderPsychometricHelpText = (): React.ReactElement => {
     if (psychometric !== null) {

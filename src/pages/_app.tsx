@@ -6,7 +6,7 @@ import { UserProfileProvider } from '../context/UserProfileContext'
 
 import { supabase } from '../adapters/supabase'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): React.ReactElement {
   return (
     <ChakraProvider>
       <Auth.UserContextProvider supabaseClient={supabase}>

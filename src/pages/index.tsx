@@ -12,7 +12,6 @@ import { PSYCHOMETRIC_URLS } from '../constants'
 
 import type { FullUserProfile } from '../types/user'
 import type { definitions } from '../types/supabase'
-import type { KeysToCamelCase } from '../types/utility'
 
 const Home: NextPage = () => {
   const [featuredUsers, setFeaturedUsers] = useState<
@@ -31,7 +30,11 @@ const Home: NextPage = () => {
       }
     }
 
-    getProfiles()
+    getProfiles().catch((e) => {
+      if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+        console.error(e)
+      }
+    })
   }, [])
 
   useEffect(() => {
@@ -60,6 +63,7 @@ const Home: NextPage = () => {
           console.error(e)
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [featuredUsers.length])
 
   // TODO: get featured profile rendering working properly
@@ -70,7 +74,7 @@ const Home: NextPage = () => {
         if (profile !== null) {
           return (
             <ProfileCard
-              profile={camelCaseKeys(profile) as KeysToCamelCase<FullUserProfile>}
+              profile={camelCaseKeys<FullUserProfile>(profile)}
               layout="simple"
               linkToProfile
             />
