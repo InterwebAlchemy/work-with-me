@@ -31,10 +31,13 @@ const UserMenu = (): React.ReactElement => {
           <MenuItem icon={<GoPerson />} onClick={viewProfile}>
             View Profile
           </MenuItem>
-          <MenuItem icon={<GoBeaker />}>
-            <Link href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL} isExternal>
-              Request New Psychometric
-            </Link>
+          <MenuItem
+            as={Link}
+            href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL}
+            isExternal
+            icon={<GoBeaker />}
+          >
+            Request New Psychometric
           </MenuItem>
           <MenuItem icon={<GoOctoface />} onClick={logOut}>
             Sign Out
