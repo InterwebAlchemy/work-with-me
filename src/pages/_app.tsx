@@ -9,13 +9,11 @@ import { UserProfileProvider } from '../context/UserProfileContext'
 import { supabase } from '../adapters/supabase'
 
 function App({ Component, pageProps }: AppProps): React.ReactElement {
-  const { cookies, otherPageProps } = pageProps
-
   return (
-    <ChakraColorModeProvider cookies={cookies}>
+    <ChakraColorModeProvider cookies={pageProps?.cookies}>
       <Auth.UserContextProvider supabaseClient={supabase}>
         <UserProfileProvider>
-          <Component {...otherPageProps} />
+          <Component {...pageProps} />
         </UserProfileProvider>
       </Auth.UserContextProvider>
     </ChakraColorModeProvider>
@@ -25,7 +23,7 @@ function App({ Component, pageProps }: AppProps): React.ReactElement {
 App.getInitialProps = (context: GetServerSidePropsContext) => {
   return {
     // first time users will not have any cookies and you may not return
-    cookies: context.req.headers.cookie ?? '',
+    cookies: context?.req?.headers?.cookie ?? '',
   }
 }
 

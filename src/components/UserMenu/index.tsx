@@ -57,8 +57,8 @@ const UserMenu = (): React.ReactElement => {
   }
 
   return (
-    <Button leftIcon={<GoOctoface />} onClick={logIn} variant="link">
-      Sign In w/ GitHub
+    <Button leftIcon={<GoOctoface />} onClick={logIn} variant="link" size="md" fontWeight="normal">
+      Sign In
     </Button>
   )
 }

@@ -18,7 +18,7 @@ export function getServerSideProps(
   return {
     props: {
       // first time users will not have any cookies and you may not return
-      cookies: context.req.headers.cookie ?? '',
+      cookies: context?.req?.headers?.cookie ?? '',
     },
   }
 }
