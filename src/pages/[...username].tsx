@@ -88,7 +88,6 @@ export const getServerSideProps = async (
       if (data !== null) {
         const profile = {
           username: data.username,
-          avatarUrl: data.avatar_url,
           website: data.website,
           communicationStyle: data.communication_style,
           enneagram: data.enneagram,

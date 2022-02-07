@@ -24,7 +24,7 @@ export const getUserAvatar = async (
 
 export interface UpdateAvatarRequest {
   userId: definitions['profiles']['id']
-  avatarUrl: definitions['profiles']['avatar_url']
+  avatarUrl: string
 }
 
 export const updateUserAvatar = async ({
@@ -99,7 +99,7 @@ export const getUserProfile = async (): Promise<
   return await supabase
     .from<definitions['profiles']>('profiles')
     .select(
-      `username, avatar_url, website, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
+      `username, website, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
     )
     .single()
 }
@@ -111,7 +111,7 @@ export const getFullUserProfile = async (
     return await supabase
       .from<FullUserProfile>('profiles')
       .select(
-        `username, avatar_url, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
+        `username, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
       )
       .match({ username })
       .single()
