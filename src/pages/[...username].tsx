@@ -5,7 +5,7 @@ import type { ParsedUrlQuery } from 'querystring'
 
 import Page from '../components/Page'
 import ProfileCard from '../components/ProfileCard'
-import { getFullUserProfile } from '../services/user'
+import { getFullUserProfile, getUserAvatar } from '../services/user'
 
 import type { definitions } from '../types/supabase'
 import type { KeysToCamelCase } from '../types/utility'
@@ -21,7 +21,10 @@ export interface UserProfileProps {
 
 const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
   return (
-    <Page>
+    <Page
+      title={profile?.username}
+      description={`Pychometric Profile for ${profile?.username ?? 'user'}.`}
+    >
       <ProfileCard profile={profile} />
       {(typeof profile?.personality?.type !== 'undefined' ||
         typeof profile?.enneagram?.number !== 'undefined' ||
@@ -87,12 +90,14 @@ export const getServerSideProps = async (
     } else {
       if (data !== null) {
         const profile = {
+          id: data.id,
           username: data.username,
           website: data.website,
           communicationStyle: data.communication_style,
           enneagram: data.enneagram,
           personality: data.personality,
           color: data.color,
+          avatarUrl: await getUserAvatar(data.id),
         }
 
         return {

@@ -59,7 +59,11 @@ const ProfileCard = ({
               chakraLinkProps={{ marginRight: '10px' }}
               title={'Work w/ Me Profile'}
             >
-              <UserAvatar size={layout === 'full' ? 'xl' : 'md'} />
+              <UserAvatar
+                size={layout === 'full' ? 'xl' : 'md'}
+                name={profile?.username}
+                src={profile?.avatarurl}
+              />
             </InternalLink>
           ) : (
             <Link
@@ -69,7 +73,11 @@ const ProfileCard = ({
               marginRight="10px"
               title="GitHub Profile"
             >
-              <UserAvatar size={layout === 'full' ? 'xl' : 'md'} />
+              <UserAvatar
+                size={layout === 'full' ? 'xl' : 'md'}
+                name={profile?.username}
+                src={profile?.avatarurl}
+              />
             </Link>
           )}
           {layout === 'full' ? (
