@@ -11,7 +11,7 @@ export const getUserAvatar = async (
 ): Promise<string | null> => {
   const { publicURL, error } = await supabase.storage
     .from('avatars')
-    .getPublicUrl(`public/${userId}.png`)
+    .getPublicUrl(`public/${userId}/avatar.png`)
 
   if (error !== null) {
     if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
@@ -39,7 +39,7 @@ export const updateUserAvatar = async ({
       .then((blob) => {
         supabase.storage
           .from('avatars')
-          .upload(`public/${userId}.png`, blob, {
+          .upload(`public/${userId}/avatar.png`, blob, {
             cacheControl: '3600',
             upsert: true,
           })
