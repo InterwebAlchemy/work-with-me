@@ -115,7 +115,7 @@ export const UserProfileProvider = ({
     const getProfile = async (): Promise<void> => {
       try {
         if (user !== null && typeof user?.identities !== 'undefined') {
-          const { error, data } = await getUserProfile()
+          const { error, data } = await getUserProfile(user.id)
 
           if (error !== null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
             console.error(error)
