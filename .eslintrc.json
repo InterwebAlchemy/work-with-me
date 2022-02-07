@@ -11,5 +11,8 @@
     "standard-with-typescript",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint"]
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/return-await": "off"
+  }
 }

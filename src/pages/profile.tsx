@@ -11,11 +11,7 @@ import Website from '../components/EditProfile/Website'
 import useProfile from '../hooks/useProfile'
 
 const Profile: NextPage = (): React.ReactElement => {
-  const { updateProfile } = useProfile()
-
-  const deleteProfile = (): void => {
-    alert('This functionality is coming soon!')
-  }
+  const { updateProfile, deleteProfile } = useProfile()
 
   return (
     <Page authenticated>

@@ -98,7 +98,7 @@ export const logIn = async (): Promise<void> => {
 export const getUserProfile = async (
   userId: definitions['profiles']['id']
 ): Promise<PostgrestSingleResponse<definitions['profiles']>> => {
-  return await supabase
+  return supabase
     .from<definitions['profiles']>('profiles')
     .select(
       `username, website, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
@@ -111,7 +111,7 @@ export const getFullUserProfile = async (
   username?: string
 ): Promise<PostgrestSingleResponse<FullUserProfile> | null> => {
   if (typeof username !== 'undefined') {
-    return await supabase
+    return supabase
       .from<FullUserProfile>('profiles')
       .select(
         `username, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
@@ -131,18 +131,26 @@ export const updateUserProfile = async (
     throw new Error('Must provide a valid userId String.')
   }
 
-  return await supabase
-    .from<definitions['profiles']>('profiles')
-    .update(profile)
-    .match({ id: userId })
+  return supabase.from<definitions['profiles']>('profiles').update(profile).match({ id: userId })
 }
 
-export const deleteUserProfile = async (): Promise<unknown> => {
-  return await supabase.from<definitions['profiles']>('profiles').delete()
+export const deleteUserProfile = async (userId: definitions['profiles']['id']): Promise<void> => {
+  try {
+    await supabase
+      .from<definitions['profiles']>('profiles')
+      .delete({ returning: 'minimal' })
+      .match({ id: userId })
+
+    await supabase.storage.from('avatars').remove([`public/${userId}.png`])
+  } catch (e) {
+    if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+      console.error(e)
+    }
+  }
 }
 
 export const getFeaturedProfiles = async (): Promise<
   PostgrestResponse<Pick<definitions['profiles'], 'username'>>
 > => {
-  return await supabase.rpc('featured_users', { user_count: 5 })
+  return supabase.rpc('featured_users', { user_count: 5 })
 }
