@@ -61,7 +61,7 @@ export const logOut = async (): Promise<void> => {
   if (error != null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
     console.error('Error logging out:', error.message)
   } else {
-    history.pushState({}, '', '/')
+    window.location.href = '/'
   }
 }
 
