@@ -37,20 +37,23 @@ export const updateUserAvatar = async ({
       .then((blob) => {
         supabase.storage
           .from('avatars')
-          .update(`${userId}.png`, blob)
-          .then((data) => {
+          .upload(`${userId}.png`, blob)
+          .then(({ error, data }) => {
+            // if (error !== null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
             console.log(data)
+            console.error(error)
+            // }
           })
           .catch((e) => {
-            if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-              console.error(e)
-            }
+            // if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+            console.error(e)
+            // }
           })
       })
       .catch((e) => {
-        if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-          console.error(e)
-        }
+        // if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
+        console.error(e)
+        // }
       })
   }
 }
