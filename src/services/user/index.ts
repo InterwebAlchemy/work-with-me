@@ -9,7 +9,9 @@ import type { FullUserProfile } from '../../types/user'
 export const getUserAvatar = async (
   userId: definitions['profiles']['id']
 ): Promise<string | null> => {
-  const { publicURL, error } = await supabase.storage.from('avatars').getPublicUrl(`${userId}.png`)
+  const { publicURL, error } = await supabase.storage
+    .from('avatars')
+    .getPublicUrl(`public/${userId}.png`)
 
   if (error !== null) {
     if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
@@ -37,7 +39,7 @@ export const updateUserAvatar = async ({
       .then((blob) => {
         supabase.storage
           .from('avatars')
-          .upload(`${userId}.png`, blob, {
+          .upload(`public/${userId}.png`, blob, {
             cacheControl: '3600',
             upsert: true,
           })
