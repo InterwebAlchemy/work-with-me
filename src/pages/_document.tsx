@@ -14,11 +14,11 @@ export default class Document extends NextDocument {
           <NextScript />
           {process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' && (
             <>
-              <script async defer src="https://user.workwithme.app/latest.js"></script>
+              <script async defer src="https://analytics.workwithme.app/latest.js"></script>
               <noscript>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://user.workwithme.app/noscript.gif"
+                  src="https://analytics.workwithme.app/noscript.gif"
                   alt=""
                   referrerPolicy="no-referrer-when-downgrade"
                 />
