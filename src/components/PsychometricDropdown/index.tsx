@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { FormControl, FormLabel, Select, FormHelperText, Link } from '@chakra-ui/react'
+import { FormControl, FormLabel, Select, FormHelperText, Text } from '@chakra-ui/react'
+
+import ExternalLink from '../ExternalLink'
 
 import type { definitions } from '../../types/supabase'
 
@@ -82,21 +84,23 @@ const PsychometricDropdown = ({
     if (psychometric !== null) {
       return (
         <FormHelperText>
-          {psychometric.description}
-          <br />
-          <br />
-          <Link href={psychometric.url} isExternal>
-            Find out more about the {psychometric.type ?? psychometric.name} {label}
-          </Link>
-          .
+          <Text marginBottom="15px">
+            <blockquote cite={psychometric.url}>{psychometric.description}</blockquote>
+          </Text>
+          <Text>
+            <ExternalLink href={psychometric.url}>
+              Find out more about the {psychometric.type ?? psychometric.name} {label}
+            </ExternalLink>
+            .
+          </Text>
         </FormHelperText>
       )
     } else if (typeof learnMoreUrl !== 'undefined') {
       return (
         <FormHelperText>
-          <Link href={learnMoreUrl} isExternal>
+          <ExternalLink href={learnMoreUrl}>
             Find out more about the {label} psychometric
-          </Link>
+          </ExternalLink>
           .
         </FormHelperText>
       )

@@ -1,10 +1,11 @@
-import { Heading, Text, Link, Box } from '@chakra-ui/react'
+import { Heading, Text, Box } from '@chakra-ui/react'
 
 import type { GetServerSidePropsResult, GetServerSidePropsContext } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
 import Page from '../components/Page'
 import ProfileCard from '../components/ProfileCard'
+import ExternalLink from '../components/ExternalLink'
 import { getFullUserProfile, getUserAvatar } from '../services/user'
 
 import type { definitions } from '../types/supabase'
@@ -42,10 +43,13 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
             Type: {profile.personality.name} ({profile.personality.type})
           </Heading>
           <Text marginBottom="10px">{profile?.personality.description}</Text>
-          <Link href={profile?.personality.url} isExternal>
-            Learn more about the {profile.personality.type} personality type and the{' '}
-            {profile?.personality.name} archetype
-          </Link>
+          <Text>
+            Learn more about the{' '}
+            <ExternalLink href={profile?.personality.url}>{profile.personality.type}</ExternalLink>{' '}
+            personality type and the{' '}
+            <ExternalLink href={profile?.personality.url}>{profile?.personality.name}</ExternalLink>{' '}
+            archetype
+          </Text>
         </Box>
       )}
       {typeof profile?.enneagram?.number !== 'undefined' && (
@@ -54,10 +58,15 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
             Enneagram: {profile?.enneagram.name} ({profile?.enneagram.number})
           </Heading>
           <Text marginBottom="10px">{profile?.enneagram.description}</Text>
-          <Link href={profile?.enneagram?.url} isExternal>
-            Learn more about the {profile?.enneagram.number} enneagram number and the{' '}
-            {profile?.enneagram.name} archetype
-          </Link>
+          <Text>
+            Learn more about the{' '}
+            <ExternalLink href={profile?.enneagram.url}>
+              {profile.enneagram.number} Enneagram Number
+            </ExternalLink>{' '}
+            and the{' '}
+            <ExternalLink href={profile?.enneagram.url}>{profile?.enneagram.name}</ExternalLink>{' '}
+            archetype
+          </Text>
         </Box>
       )}
       {typeof profile?.color?.name !== 'undefined' && (
@@ -66,9 +75,12 @@ const UserProfile = ({ profile }: UserProfileProps): React.ReactElement => {
             Color: {profile?.color.name}
           </Heading>
           <Text marginBottom="10px">{profile?.color.description}</Text>
-          <Link href={profile?.color.url} isExternal>
-            Learn more about the {profile?.color.name} personality color
-          </Link>
+          <Text>
+            Learn more about the{' '}
+            <ExternalLink href={profile?.color.url}>
+              {profile.color.name} personality color
+            </ExternalLink>
+          </Text>
         </Box>
       )}
     </Page>

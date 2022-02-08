@@ -1,11 +1,12 @@
 import Head from 'next/head'
-import { Heading, Text, Link, Box } from '@chakra-ui/react'
+import { Heading, Text, Box } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
 import type { NextPage } from 'next'
 
 import Page from '../components/Page'
 import ProfileCard from '../components/ProfileCard'
+import ExternalLink from '../components/ExternalLink'
 import { getFeaturedProfiles, getFullUserProfile } from '../services/user'
 import camelCaseKeys from '../utils/camelCaseKeys'
 import { PSYCHOMETRIC_URLS } from '../constants'
@@ -99,30 +100,38 @@ const Home: NextPage = () => {
         </Heading>
 
         <Text marginBottom="20px">
-          We want to help you get to know how your colleagues communicate and how to understand
-          their personality.
+          Personality profiles are a way to distill parts of your personality and life philosophy
+          into an easily digestible chunk of information.
+        </Text>
+
+        <Text marginBottom="20px">
+          They are not a perfect measure, by any means, but they are an interesting measure for you
+          - and anyone else you share the results with - to consider. They can be especially helpful
+          in the workplace (or in Open Source projects) where personalities, communication styles,
+          and philosophies can clash in complicated ways.
+        </Text>
+
+        <Text marginBottom="20px">
+          Work w/ Me wants to help you provide an easy way to show other developers these
+          personality psychometrics in a way that might help you understand how to collaborate more
+          effectively.
         </Text>
 
         <Text marginBottom="20px">
           By using Work w/ Me, you can share a short description of your Communication Style, your{' '}
-          <Link href={PSYCHOMETRIC_URLS.TYPE} isExternal>
-            Myers Briggs Personality
-          </Link>
-          ,{' '}
-          <Link href={PSYCHOMETRIC_URLS.ENNEAGRAM} isExternal>
-            Enneagram Number
-          </Link>
-          , and{' '}
-          <Link href={PSYCHOMETRIC_URLS.COLOR} isExternal>
+          <ExternalLink href={PSYCHOMETRIC_URLS.TYPE}>Myers Briggs Personality</ExternalLink>,{' '}
+          <ExternalLink href={PSYCHOMETRIC_URLS.ENNEAGRAM}>Enneagram Number</ExternalLink>, and{' '}
+          <ExternalLink href={PSYCHOMETRIC_URLS.COLOR}>
             Hartman Personality Profile Color
-          </Link>{' '}
-          so that people who work with you can get a better understanding of who you are.
+          </ExternalLink>{' '}
+          so that people who work with you can get a better understanding of who you are, how you
+          think, and what motivates you.
         </Text>
       </Box>
       {featuredUsers.length > 0 && (
         <Box as="aside">
           <Heading as="h2" size="sm" marginBottom="40px">
-            Featured Users
+            Get to know a random user:
           </Heading>
           {renderFeaturedProfiles()}
         </Box>

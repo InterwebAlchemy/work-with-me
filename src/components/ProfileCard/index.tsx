@@ -3,6 +3,7 @@ import { Box, Stack, Link, Text, Heading } from '@chakra-ui/react'
 import UserAvatar from '../UserAvatar'
 import PsychometricTag from '../PsychometricTag'
 import InternalLink from '../InternalLink'
+import ExternalLink from '../ExternalLink'
 import { GITHUB_PROFILE_BASE_URL, APPLICATION_URL } from '../../constants'
 
 import type { UserProfileProps } from '../../pages/[...username]'
@@ -84,9 +85,7 @@ const ProfileCard = ({
             <Stack direction="column" paddingRight="10px">
               <Text>
                 <CardHeader />
-                <Link href={profile?.website} isExternal>
-                  {profile?.website}
-                </Link>
+                <ExternalLink href={profile?.website}>{profile?.website}</ExternalLink>
                 <Text>{profile?.communicationStyle}</Text>
               </Text>
             </Stack>
@@ -97,23 +96,23 @@ const ProfileCard = ({
               </Text>
               <Stack direction="row" flexWrap="wrap">
                 {typeof profile?.personality?.type !== 'undefined' && (
-                  <Link href={profile.personality.url} isExternal>
+                  <ExternalLink href={profile.personality.url}>
                     <PsychometricTag>
                       {profile?.personality.type} | {profile?.personality.name}
                     </PsychometricTag>
-                  </Link>
+                  </ExternalLink>
                 )}
                 {typeof profile?.enneagram?.number !== 'undefined' && (
-                  <Link href={profile.enneagram.url} isExternal>
+                  <ExternalLink href={profile.enneagram.url}>
                     <PsychometricTag>
                       {profile?.enneagram.number} | {profile?.enneagram.name}
                     </PsychometricTag>
-                  </Link>
+                  </ExternalLink>
                 )}
                 {typeof profile?.color?.name !== 'undefined' && (
-                  <Link href={profile.color.url} isExternal>
+                  <ExternalLink href={profile.color.url}>
                     <PsychometricTag>{profile?.color.name}</PsychometricTag>
-                  </Link>
+                  </ExternalLink>
                 )}
               </Stack>
             </Stack>
