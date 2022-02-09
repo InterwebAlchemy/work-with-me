@@ -6,6 +6,8 @@ export const APPLICATION_URL = ['production', 'local'].includes(process.env.NEXT
 
 export const GITHUB_PROFILE_BASE_URL = 'https://github.com'
 
+export const GITHUB_API_URL = 'https://api.github.com'
+
 export const SHIELDS_IO_ENDPOINT = 'https://img.shields.io/endpoint'
 
 export const PSYCHOMETRIC_URLS = {

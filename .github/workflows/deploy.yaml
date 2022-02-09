@@ -12,6 +12,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # borrowed from: https://github.community/t/dont-run-actions-on-draft-pull-requests/16817/20
+  fail_if_pull_request_is_draft:
+    if: github.event.pull_request.draft == true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Fail in order to indicate that Pull Request needs to be marked as Ready for Review before CI/CD pipeline can run.
+      run: exit 1
+
   deploy:
     runs-on: ubuntu-latest
     steps:

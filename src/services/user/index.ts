@@ -1,66 +1,9 @@
-import fetch from 'cross-fetch'
-
 import type { PostgrestSingleResponse, PostgrestResponse } from '@supabase/supabase-js'
 
 import { supabase } from '../../adapters/supabase'
+import { APPLICATION_URL } from '../../constants'
 import type { definitions } from '../../types/supabase'
 import type { FullUserProfile } from '../../types/user'
-
-export const getUserAvatar = async (
-  userId: definitions['profiles']['id']
-): Promise<string | null> => {
-  const { publicURL, error } = await supabase.storage
-    .from('avatars')
-    .getPublicUrl(`public/${userId}/avatar.png`)
-
-  if (error !== null) {
-    if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-      console.error(error)
-    }
-
-    return null
-  }
-
-  return publicURL
-}
-
-export interface UpdateAvatarRequest {
-  userId: definitions['profiles']['id']
-  avatarUrl: string
-}
-
-export const updateUserAvatar = async ({
-  userId,
-  avatarUrl,
-}: UpdateAvatarRequest): Promise<void> => {
-  if (typeof avatarUrl !== 'undefined') {
-    fetch(new URL(avatarUrl).toString())
-      .then(async (response) => await response.blob())
-      .then((blob) => {
-        supabase.storage
-          .from('avatars')
-          .upload(`public/${userId}/avatar.png`, blob, {
-            cacheControl: '3600',
-            upsert: true,
-          })
-          .then(({ error, data }) => {
-            if (error !== null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-              console.error(error)
-            }
-          })
-          .catch((e) => {
-            if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-              console.error(e)
-            }
-          })
-      })
-      .catch((e) => {
-        if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-          console.error(e)
-        }
-      })
-  }
-}
 
 export const logOut = async (): Promise<void> => {
   const { error } = await supabase.auth.signOut()
@@ -73,25 +16,10 @@ export const logOut = async (): Promise<void> => {
 }
 
 export const logIn = async (): Promise<void> => {
-  const { error, user } = await supabase.auth.signIn(
+  const { error } = await supabase.auth.signIn(
     { provider: 'github' },
-    { redirectTo: `${process.env.NEXT_PUBLIC_APPLICATION_URL}/profile` }
+    { redirectTo: `${APPLICATION_URL}/profile` }
   )
-
-  if (user !== null) {
-    console.log(user)
-
-    const userId = user.id
-    const avatarUrl = user.identities?.[0].identity_data.avatar_url
-
-    console.log(avatarUrl)
-
-    updateUserAvatar({ userId, avatarUrl }).catch((e) => {
-      if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
-        console.error(e)
-      }
-    })
-  }
 
   if (error != null && process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
     console.error('Error logging in:', error.message)
@@ -104,7 +32,7 @@ export const getUserProfile = async (
   return supabase
     .from<definitions['profiles']>('profiles')
     .select(
-      `username, website, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
+      `username, website, avatar_url, communication_style, personality_type_id, personality_color_id, enneagram_type_id`
     )
     .match({ id: userId })
     .single()
@@ -117,7 +45,7 @@ export const getFullUserProfile = async (
     return supabase
       .from<FullUserProfile>('profiles')
       .select(
-        `id, username, website, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
+        `id, username, website, avatar_url, communication_style, personality:personality_type_id(type, name, description, url), color:personality_color_id(name, description, url), enneagram:enneagram_type_id(name, number, description, url)`
       )
       .match({ username })
       .single()

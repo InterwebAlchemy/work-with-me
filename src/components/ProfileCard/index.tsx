@@ -63,7 +63,7 @@ const ProfileCard = ({
               <UserAvatar
                 size={layout === 'full' ? 'xl' : 'md'}
                 name={profile?.username}
-                src={profile?.avatarurl}
+                src={profile?.avatarUrl}
               />
             </InternalLink>
           ) : (
@@ -77,7 +77,7 @@ const ProfileCard = ({
               <UserAvatar
                 size={layout === 'full' ? 'xl' : 'md'}
                 name={profile?.username}
-                src={profile?.avatarurl}
+                src={profile?.avatarUrl}
               />
             </Link>
           )}

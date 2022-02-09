@@ -102,7 +102,6 @@
     "commit:retry": "npm run commit -- --retry",
     "dev": "npm run dev:next",
     "dev:next": "next dev",
-    "lint:app": "next lint",
     "prepare": "is-ci || npm run prepare:local",
     "prepare:env": "copyfiles ./.env.example ./.env.local",
     "prepare:husky": "husky install",
@@ -110,12 +109,15 @@
     "prepare:supabase": "npm run supabase:init",
     "start": "next start",
     "supabase:init": "supabase init",
-    "test": "npm run lint:app"
+    "test": "npm run test:eslint && npm run test:tsc",
+    "test:eslint": "eslint",
+    "test:tsc": "tsc -p ./ --noEmit"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.1",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@octokit/types": "^6.34.0",
     "@supabase/supabase-js": "^1.29.4",
     "@supabase/ui": "^0.36.3",
     "cors": "^2.8.5",
