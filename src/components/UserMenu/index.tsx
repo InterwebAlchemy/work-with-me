@@ -8,10 +8,9 @@ import useProfile from '../../hooks/useProfile'
 
 const UserMenu = (): React.ReactElement => {
   const router = useRouter()
-
   const [loggedIn, setLoggedIn] = useState(false)
 
-  const { username, logIn, logOut } = useProfile()
+  const { username, logIn, logOut, avatarUrl } = useProfile()
 
   const editProfile = async (): Promise<void> => {
     await router.push('/profile')
@@ -31,7 +30,7 @@ const UserMenu = (): React.ReactElement => {
     return (
       <Menu>
         <MenuButton aria-label="Menu" variant="">
-          <UserAvatar />
+          <UserAvatar src={avatarUrl} />
         </MenuButton>
         <MenuList>
           <MenuItem icon={<GoPencil />} onClick={editProfile}>

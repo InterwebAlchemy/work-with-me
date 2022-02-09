@@ -6,7 +6,7 @@ import type { ParsedUrlQuery } from 'querystring'
 import Page from '../components/Page'
 import ProfileCard from '../components/ProfileCard'
 import ExternalLink from '../components/ExternalLink'
-import { getFullUserProfile, getUserAvatar } from '../services/user'
+import { getFullUserProfile } from '../services/user'
 
 import type { definitions } from '../types/supabase'
 import type { KeysToCamelCase } from '../types/utility'
@@ -109,7 +109,7 @@ export const getServerSideProps = async (
           enneagram: data.enneagram,
           personality: data.personality,
           color: data.color,
-          avatarUrl: await getUserAvatar(data.id),
+          avatarUrl: data.avatar_url,
         }
 
         return {

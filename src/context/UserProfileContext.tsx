@@ -5,7 +5,6 @@ import {
   getUserProfile,
   updateUserProfile,
   deleteUserProfile,
-  getUserAvatar,
   logIn,
   logOut,
 } from '../services/user'
@@ -14,6 +13,7 @@ import {
   getPersonalityColors,
   getEnneagramTypes,
 } from '../services/psychometrics'
+import { gitHubUserDetails } from '../services/github'
 
 import type { definitions } from '../types/supabase'
 import type { KeysToCamelCase } from '../types/utility'
@@ -146,12 +146,6 @@ export const UserProfileProvider = ({
               setEnneagramTypeId(data.enneagram_type_id)
               setPersonalityTypeId(data.personality_type_id)
               setPersonalityColorId(data.personality_color_id)
-
-              const avatarUrl = await getUserAvatar(user.id)
-
-              if (avatarUrl !== null) {
-                setAvatarUrl(avatarUrl)
-              }
             }
           }
         }
@@ -174,6 +168,21 @@ export const UserProfileProvider = ({
       setId(user.id)
     }
   }, [user])
+
+  useEffect(() => {
+    if (typeof username !== 'undefined' && username !== null) {
+      gitHubUserDetails(username)
+        .then((gitHubProfile) => {
+          console.log(gitHubProfile)
+          const { avatar_url: avatarUrl } = gitHubProfile
+          // @ts-expect-error avatar_url is defined as a string; not sure why tsc isn't cooperating
+          setAvatarUrl(avatarUrl)
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    }
+  }, [username])
 
   return (
     <UserProfileContext.Provider
