@@ -9,6 +9,7 @@ declare global {
 
       NEXT_PUBLIC_SUPABASE_URL: string
       NEXT_PUBLIC_SUPABASE_ANON_KEY: string
+      SUPABASE_ROLE_KEY: string
 
       NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL?: string
 
