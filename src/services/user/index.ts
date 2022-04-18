@@ -1,7 +1,10 @@
+import fetch from 'cross-fetch'
+
 import type { PostgrestSingleResponse, PostgrestResponse } from '@supabase/supabase-js'
 
 import { supabase } from '../../adapters/supabase'
 import { APPLICATION_URL } from '../../constants'
+
 import type { definitions } from '../../types/supabase'
 import type { FullUserProfile } from '../../types/user'
 
@@ -67,12 +70,7 @@ export const updateUserProfile = async (
 
 export const deleteUserProfile = async (userId: definitions['profiles']['id']): Promise<void> => {
   try {
-    await supabase
-      .from<definitions['profiles']>('profiles')
-      .delete({ returning: 'minimal' })
-      .match({ id: userId })
-
-    await supabase.storage.from('avatars').remove([`public/${userId}.png`])
+    await fetch('/api/user/delete')
   } catch (e) {
     if (process.env.NEXT_PUBLIC_FEATURE__DEBUG_LOGS === 'ENABLED') {
       console.error(e)

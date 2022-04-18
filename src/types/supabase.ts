@@ -423,23 +423,6 @@ export interface paths {
       };
     };
   };
-  "/rpc/handle_new_user": {
-    post: {
-      parameters: {
-        body: {
-          args: { [key: string]: unknown };
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferParams"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: unknown;
-      };
-    };
-  };
   "/rpc/featured_users": {
     post: {
       parameters: {
