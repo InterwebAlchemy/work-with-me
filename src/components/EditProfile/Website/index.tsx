@@ -14,7 +14,7 @@ const Website = (): React.ReactElement => {
   return (
     <FormControl marginBottom="20px">
       <FormLabel>Website</FormLabel>
-      <Input onChange={onWebsiteChange} value={website} />
+      <Input onBlur={onWebsiteChange} defaultValue={website} />
       <FormHelperText>
         Provide a URL where people can learn more about you. We recommend a personal blog or
         LinkedIn profile, but you do you.

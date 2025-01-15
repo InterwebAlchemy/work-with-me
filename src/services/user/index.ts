@@ -67,10 +67,13 @@ export const updateUserProfile = async (
 
 export const deleteUserProfile = async (userId: definitions['profiles']['id']): Promise<void> => {
   try {
-    await supabase
-      .from<definitions['profiles']>('profiles')
-      .delete({ returning: 'minimal' })
-      .match({ id: userId })
+    await fetch('/api/user/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    })
 
     await supabase.storage.from('avatars').remove([`public/${userId}.png`])
   } catch (e) {

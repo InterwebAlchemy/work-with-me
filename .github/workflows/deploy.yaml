@@ -23,7 +23,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_AUTH_TOKEN }}
 
@@ -32,31 +32,34 @@ jobs:
           git config --global user.email "bot@workwithme.app"
           git config --global user.name "Work w/ Me Release Bot"
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: 14
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
-      - name: Cache node modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+      # - name: Cache node modules
+      #   uses: actions/cache@v4
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-${{ env.cache-name }}-
+      #       ${{ runner.os }}-build-
+      #       ${{ runner.os }}-
 
       - name: Install dependencies
-        run: npm ci
+        # HACK: npm ci was failing, probably due to some old dependency in this now-ancient project
+        run: npm install
 
       - name: Encode Supabase API Key
         id: credentials
         run: |
           api_key="${{ secrets.SUPABASE_ANON_KEY }}"
           url_encoded_key=$(node -p "encodeURIComponent('$api_key')")
-          echo "::set-output name=ENCODED_SUPABASE_ANON_KEY::${url_encoded_key}";
+          echo "ENCODED_SUPABASE_ANON_KEY=${url_encoded_key}" >> $GITHUB_OUTPUT
 
       - name: Generate Types
         run: npm run build:types
@@ -67,32 +70,25 @@ jobs:
       - name: Check for modified files
         id: git-check
         run:
-          echo ::set-output name=modified::$(if [ -n "$(git status --porcelain)" ]; then echo
-          "true"; else echo "false"; fi)
-
-      - name: Push Changes to Type Definitions
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git add .
-          git commit -m 'chore(types): update supabase type definitions'
-          git push
+          value=$(if [ -n "$(git status --porcelain)" ]; then echo "true"; else echo "false"; fi)
+          echo "modified=$value" >> $GITHUB_OUTPUT
 
       - name: Run Tests
         run: npm test
 
-      - name: PR Preview Deployment
-        uses: amondnet/vercel-action@v20
-        id: vercel-action-pr
-        if: startsWith(github.head_ref, 'feature/') && github.base_ref == 'main'
-        with:
-          vercel-project-name: work-with-me
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GH_AUTH_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
-          scope: interweb-alchemy
-          alias-domains: |
-            pr-{{PR_NUMBER}}-work-with-me.vercel.app
+      # - name: PR Preview Deployment
+      #   uses: amondnet/vercel-action@v20
+      #   id: vercel-action-pr
+      #   if: startsWith(github.head_ref, 'feature/') && github.base_ref == 'main'
+      #   with:
+      #     vercel-project-name: work-with-me
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+      #     github-token: ${{ secrets.GH_AUTH_TOKEN }}
+      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+      #     scope: interweb-alchemy
+      #     alias-domains: |
+      #       pr-{{PR_NUMBER}}-work-with-me.vercel.app
 
       - name: Deploy to Production
         uses: amondnet/vercel-action@v20
@@ -108,6 +104,13 @@ jobs:
           scope: interweb-alchemy
           alias-domains: |
             work-with-me.vercel.app
+
+      - name: Push Changes to Type Definitions
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git add .
+          git commit -m 'chore(types): update supabase type definitions'
+          git push origin HEAD:main
 
       - name: Semantic Release
         if: github.ref == 'refs/heads/main'

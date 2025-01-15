@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuList, MenuItem, Button, Link } from '@chakra-ui/react'
-import { GoPencil, GoPerson, GoOctoface, GoBeaker } from 'react-icons/go'
+import { GoPencil, GoPerson, GoBeaker } from 'react-icons/go'
+import { IoLogoOctocat } from 'react-icons/io'
 
 import UserAvatar from '../UserAvatar'
 import useProfile from '../../hooks/useProfile'
@@ -29,7 +30,7 @@ const UserMenu = (): React.ReactElement => {
   if (loggedIn) {
     return (
       <Menu>
-        <MenuButton aria-label="Menu" variant="">
+        <MenuButton aria-label="Menu">
           <UserAvatar src={avatarUrl} />
         </MenuButton>
         <MenuList>
@@ -39,15 +40,17 @@ const UserMenu = (): React.ReactElement => {
           <MenuItem icon={<GoPerson />} onClick={viewProfile}>
             View Profile
           </MenuItem>
-          <MenuItem
-            as={Link}
-            href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL}
-            isExternal
-            icon={<GoBeaker />}
-          >
-            Request New Psychometric
-          </MenuItem>
-          <MenuItem icon={<GoOctoface />} onClick={logOut}>
+          {typeof process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL !== 'undefined' && (
+            <MenuItem
+              as={Link}
+              href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL}
+              isExternal
+              icon={<GoBeaker />}
+            >
+              Request New Psychometric
+            </MenuItem>
+          )}
+          <MenuItem icon={<IoLogoOctocat />} onClick={logOut}>
             Sign Out
           </MenuItem>
         </MenuList>
@@ -56,7 +59,13 @@ const UserMenu = (): React.ReactElement => {
   }
 
   return (
-    <Button leftIcon={<GoOctoface />} onClick={logIn} variant="link" size="md" fontWeight="normal">
+    <Button
+      leftIcon={<IoLogoOctocat />}
+      onClick={logIn}
+      variant="link"
+      size="md"
+      fontWeight="normal"
+    >
       Sign In
     </Button>
   )
