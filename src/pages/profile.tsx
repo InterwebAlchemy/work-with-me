@@ -11,7 +11,25 @@ import Website from '../components/EditProfile/Website'
 import useProfile from '../hooks/useProfile'
 
 const Profile: NextPage = (): React.ReactElement => {
-  const { updateProfile, deleteProfile } = useProfile()
+  const { updateProfile, deleteProfile, logOut } = useProfile()
+
+  const onClickDeleteProfile = (): void => {
+    const reallyDeleteProfile = confirm(
+      'Are you sure you want to delete your profile? This action is irreversible.'
+    )
+
+    if (reallyDeleteProfile) {
+      deleteProfile()
+        .then(() => {
+          logOut().catch((error) => {
+            console.error(error)
+          })
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+  }
 
   return (
     <Page authenticated>
@@ -27,7 +45,12 @@ const Profile: NextPage = (): React.ReactElement => {
             <Button onClick={updateProfile} colorScheme="teal">
               Update Profile
             </Button>
-            <Button onClick={deleteProfile} colorScheme="red" variant="link" fontWeight="normal">
+            <Button
+              onClick={onClickDeleteProfile}
+              colorScheme="red"
+              variant="link"
+              fontWeight="normal"
+            >
               Delete Profile
             </Button>
           </ButtonGroup>

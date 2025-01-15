@@ -173,7 +173,6 @@ export const UserProfileProvider = ({
     if (typeof username !== 'undefined' && username !== null) {
       gitHubUserDetails(username)
         .then((gitHubProfile) => {
-          console.log(gitHubProfile)
           const { avatar_url: avatarUrl } = gitHubProfile
           // @ts-expect-error avatar_url is defined as a string; not sure why tsc isn't cooperating
           setAvatarUrl(avatarUrl)
