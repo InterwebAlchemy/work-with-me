@@ -174,7 +174,8 @@ export const UserProfileProvider = ({
       gitHubUserDetails(username)
         .then((gitHubProfile) => {
           const { avatar_url: avatarUrl } = gitHubProfile
-          // @ts-expect-error avatar_url is defined as a string; not sure why tsc isn't cooperating
+
+          // TODO: This fails typescript checking locally, but the //@ts-exepct-error causes the remote build to fail
           setAvatarUrl(avatarUrl)
         })
         .catch((e) => {
