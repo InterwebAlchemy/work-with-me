@@ -39,14 +39,16 @@ const UserMenu = (): React.ReactElement => {
           <MenuItem icon={<GoPerson />} onClick={viewProfile}>
             View Profile
           </MenuItem>
-          <MenuItem
-            as={Link}
-            href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL}
-            isExternal
-            icon={<GoBeaker />}
-          >
-            Request New Psychometric
-          </MenuItem>
+          {typeof process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL !== 'undefined' && (
+            <MenuItem
+              as={Link}
+              href={process.env.NEXT_PUBLIC_PSYCHOMETRIC_REQUEST_URL}
+              isExternal
+              icon={<GoBeaker />}
+            >
+              Request New Psychometric
+            </MenuItem>
+          )}
           <MenuItem icon={<GoOctoface />} onClick={logOut}>
             Sign Out
           </MenuItem>
