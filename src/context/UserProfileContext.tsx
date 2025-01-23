@@ -173,10 +173,8 @@ export const UserProfileProvider = ({
     if (typeof username !== 'undefined' && username !== null) {
       gitHubUserDetails(username)
         .then((gitHubProfile) => {
-          const { avatar_url: avatarUrl } = gitHubProfile
-
           // TODO: This fails typescript checking locally, but the //@ts-exepct-error causes the remote build to fail
-          setAvatarUrl(avatarUrl)
+          setAvatarUrl((gitHubProfile.avatar_url as string) ?? '')
         })
         .catch((e) => {
           console.error(e)
