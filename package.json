@@ -12,8 +12,8 @@
     "url": "https://github.com/InterwebAlchemy/work-with-me"
   },
   "engines": {
-    "node": "14",
-    "npm": "6"
+    "node": ">=20",
+    "npm": ">=7"
   },
   "bugs": {
     "url": "https://github.com/InterwebAlchemy/work-with-me/issues"
@@ -108,7 +108,7 @@
     "prepare:local": "npm run prepare:env && npm run prepare:husky && npm run prepare:supabase",
     "prepare:supabase": "npm run supabase:init",
     "start": "next start",
-    "supabase:init": "supabase init",
+    "supabase:init": "path-exists ./supabase/config.toml || supabase init",
     "test": "npm run test:eslint && npm run test:tsc",
     "test:eslint": "eslint",
     "test:tsc": "tsc -p ./ --noEmit"
@@ -153,6 +153,7 @@
     "is-ci": "^3.0.1",
     "lint-staged": "^12.3.3",
     "openapi-typescript": "^5.1.1",
+    "path-exists-cli": "^2.0.0",
     "typescript": "^4.5.5"
   }
 }

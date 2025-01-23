@@ -34,7 +34,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 20
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
@@ -51,8 +51,7 @@ jobs:
       #       ${{ runner.os }}-
 
       - name: Install dependencies
-        # HACK: npm ci was failing, probably due to some old dependency in this now-ancient project
-        run: npm install
+        run: npm ci
 
       - name: Encode Supabase API Key
         id: credentials
