@@ -5,11 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const { userId } = req.body
 
-  console.log('userId:', userId)
-
   if (typeof userId !== 'undefined') {
-    console.log('KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY)
-
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
       process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
